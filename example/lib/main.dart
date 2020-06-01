@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_sdk/pos_sdk.dart';
+import 'package:mobile_pos_plugin/mobile_pos_plugin.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,10 +65,13 @@ class _MyHomePageState extends State<MyHomePage> {
   final _captureKey = GlobalKey<CaptureWidgetState>();
   PrinterBluetoothManager printerManager = PrinterBluetoothManager();
   List<PrinterBluetooth> _devices = [];
+  MobilePosPlugin mobilePosPlugin;
 
   @override
   void initState() {
     super.initState();
+    mobilePosPlugin = MobilePosPlugin();
+
     printerManager.scanResults.listen((devices) async {
       // print('UI: Devices found ${devices.length}');
       setState(() {
@@ -124,7 +128,27 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[Text('عنوان')],
+              children: <Widget>[
+                Text('عنوان'),
+                Container(
+                  width: 250,
+                                  child: Table(
+                    border: TableBorder.all(color: Colors.black),
+                    children: [
+                      TableRow(children: [
+                        Text('Cell 1'),
+                        Text('Cell 2'),
+                        Text('Cell 3'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
+                      ])
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -136,6 +160,18 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               RaisedButton(
                 onPressed: () async {
+                  final captureResult =
+                      await _captureKey.currentState.captureImage();
+
+                  await mobilePosPlugin.init();
+                  mobilePosPlugin.print(captureResult.data, (data) {
+                    print(data);
+                  });
+                },
+                child: Text('print via default termal printer'),
+              ),
+              RaisedButton(
+                onPressed: () async {
                   final PrinterNetworkManager netPrinterManager =
                       PrinterNetworkManager();
                   netPrinterManager.selectPrinter('192.168.1.108', port: 9100);
@@ -145,7 +181,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   var test = await testTicket();
                   final image = decodeImage(captureResult.data);
                   test.image(image);
-                  test.feed(2);
                   // test.imageRaster(image);
                   test.cut();
                   final resutl = await netPrinterManager.printTicket(test);
