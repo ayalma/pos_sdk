@@ -4,7 +4,6 @@ import 'package:image/image.dart';
 
 import 'package:charset_converter/charset_converter.dart';
 import 'package:esc_pos_printer/esc_pos_printer.dart';
-import 'package:esc_pos_bluetooth/esc_pos_bluetooth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/material.dart';
