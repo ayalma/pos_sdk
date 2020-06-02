@@ -133,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     border: TableBorder.all(color: Colors.black),
                     children: [
                       TableRow(children: [
-                        Text('Cell 1'),
+                        Text('فراموشی '),
                         Text('Cell 2'),
                         Text('Cell 3'),
                       ]),
@@ -189,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 RaisedButton(
                   onPressed: () async {
                     final captureResult =
-                        await OffScreenCaptureWidget.of(context).captureImage();
+                        await OffScreenCaptureWidget.of(context).captureImage(width: PaperSize.mm80.width);
 
                     await mobilePosPlugin.init();
 
@@ -204,7 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 RaisedButton(
                   onPressed: () async {
                     final captureResult =
-                        await OffScreenCaptureWidget.of(context).captureImage();
+                        await OffScreenCaptureWidget.of(context).captureImage(width: PaperSize.mm58.width);
 
                     var test = await testTicket();
       
@@ -223,13 +223,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     netPrinterManager.selectPrinter('192.168.1.108',
                         port: 9100);
                     final captureResult =
-                        await OffScreenCaptureWidget.of(context).captureImage();
+                        await OffScreenCaptureWidget.of(context).captureImage(width: PaperSize.mm80.width);
 
                     var test = await testTicket();
 
                     test.image(captureResult.image);
                     // test.imageRaster(image);
-                    test.cut();
+                    test.cut(mode: PosCutMode.partial);
                     final resutl = await netPrinterManager.printTicket(test);
                     print(resutl);
                   },

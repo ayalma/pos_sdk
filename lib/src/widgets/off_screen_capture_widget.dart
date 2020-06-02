@@ -52,7 +52,7 @@ class OffScreenCaptureWidget extends StatefulWidget {
 class OffScreenCaptureWidgetState extends State<OffScreenCaptureWidget> {
   final _boundaryKey = GlobalKey();
 
-  Future<CaptureResult> captureImage() async {
+  Future<CaptureResult> captureImage({int width = 384}) async {
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
     final boundary =
         _boundaryKey.currentContext.findRenderObject() as RenderRepaintBoundary;
@@ -61,7 +61,7 @@ class OffScreenCaptureWidgetState extends State<OffScreenCaptureWidget> {
 
     image.Image baseSizeImage = image.decodeImage(data.buffer.asUint8List());
     image.Image resizeImage =
-        image.copyResize(baseSizeImage, width: 384, height: img.height);
+        image.copyResize(baseSizeImage, width: width, height: img.height);
     ui.Codec codec =
         await ui.instantiateImageCodec(image.encodePng(resizeImage));
     ui.FrameInfo frameInfo = await codec.getNextFrame();
