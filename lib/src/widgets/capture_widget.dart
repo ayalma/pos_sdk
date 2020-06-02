@@ -59,7 +59,7 @@ class CaptureWidgetState extends State<CaptureWidget> {
         _boundaryKey.currentContext.findRenderObject() as RenderRepaintBoundary;
     final image = await boundary.toImage(pixelRatio: pixelRatio);
     final data = await image.toByteData(format: ui.ImageByteFormat.png);
-    return CaptureResult(data.buffer.asUint8List(), image.width, image.height,image);
+    return CaptureResult(data.buffer.asUint8List(), image.width, image.height,null);
   }
 
   @override

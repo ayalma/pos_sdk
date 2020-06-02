@@ -1,6 +1,5 @@
 import 'dart:typed_data';
-
-import 'dart:ui';
+import 'package:image/image.dart';
 
 class CaptureResult {
   final Image image;

@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-import 'package:image/image.dart' hide Image;
+import 'package:image/image.dart' as image;
 
 import 'package:charset_converter/charset_converter.dart';
 import 'package:esc_pos_printer/esc_pos_printer.dart';
@@ -101,8 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
         await OffScreenCaptureWidget.of(context).captureImage();
 
     var test = await testTicket();
-    final image = decodeImage(captureResult.data);
-    test.image(copyResize(image, width: 500, height: image.height));
+
+    test.image(captureResult.image);
     // test.imageRaster(image);
     test.cut();
     // DEMO RECEIPT
@@ -124,7 +124,10 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text('عنوان',style:Theme.of(context).textTheme.title,),
+                Text(
+                  'عنوان',
+                  style: Theme.of(context).textTheme.title,
+                ),
                 Container(
                   child: Table(
                     border: TableBorder.all(color: Colors.black),
@@ -190,9 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                     await mobilePosPlugin.init();
 
-                    final image = decodeImage(captureResult.data);
-                    
-                  //  final img = copyResize(image, width: 500, height: image.height);
+                    //  final img = copyResize(image, width: 500, height: image.height);
 
                     mobilePosPlugin.print(captureResult.data, (data) {
                       print(data);
@@ -206,15 +207,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         await OffScreenCaptureWidget.of(context).captureImage();
 
                     var test = await testTicket();
-                    final image = decodeImage(captureResult.data);
-
-                    print(image.width);
-
-                    test.image(
-                        copyResize(image, width: 500, height: image.height));
+      
+                    test.image(captureResult.image);
                     // test.imageRaster(image);
                     test.cut();
-                    printerManager.printTicket(test,chunkSizeBytes: 50,queueSleepTimeMs: 0);
+                    printerManager.printTicket(test,
+                        chunkSizeBytes: 50, queueSleepTimeMs: 0);
                   },
                   child: Text('print via selected bluetoothDevice'),
                 ),
@@ -228,12 +226,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         await OffScreenCaptureWidget.of(context).captureImage();
 
                     var test = await testTicket();
-                    final image = decodeImage(captureResult.data);
 
-                    print(image.width);
-
-                    test.image(
-                        copyResize(image, width: 520, height: image.height));
+                    test.image(captureResult.image);
                     // test.imageRaster(image);
                     test.cut();
                     final resutl = await netPrinterManager.printTicket(test);
