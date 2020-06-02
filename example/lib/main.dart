@@ -1,6 +1,5 @@
 import 'dart:typed_data';
-import 'dart:ui';
-import 'package:image/image.dart';
+import 'package:image/image.dart' hide Image;
 
 import 'package:charset_converter/charset_converter.dart';
 import 'package:esc_pos_printer/esc_pos_printer.dart';
@@ -62,8 +61,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  final _captureKey = GlobalKey<CaptureWidgetState>();
-  PrinterBluetoothManager printerManager = PrinterBluetoothManager();
+  BluetoothPrinterManager printerManager;
+  BluetoothDiscoveryManager discoveryManager = BluetoothDiscoveryManager();
   List<PrinterBluetooth> _devices = [];
   MobilePosPlugin mobilePosPlugin;
 
@@ -71,8 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     mobilePosPlugin = MobilePosPlugin();
-
-    printerManager.scanResults.listen((devices) async {
+    discoveryManager.scanResults.listen((devices) async {
       // print('UI: Devices found ${devices.length}');
       setState(() {
         _devices = devices;
@@ -84,16 +82,14 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _devices = [];
     });
-    printerManager.startScan(Duration(seconds: 4));
+    discoveryManager.startScan(Duration(seconds: 4));
   }
 
   void _stopScanDevices() {
-    printerManager.stopScan();
+    discoveryManager.stopScan();
   }
 
   void _testPrint(PrinterBluetooth printer) async {
-    printerManager.selectPrinter(printer);
-
     // TODO Don't forget to choose printer's paper
     const PaperSize paper = PaperSize.mm80;
 
@@ -101,16 +97,16 @@ class _MyHomePageState extends State<MyHomePage> {
     // final PosPrintResult res =
     // await printerManager.printTicket(await testTicket(paper));
 
-    final captureResult = await _captureKey.currentState.captureImage();
+    final captureResult =
+        await OffScreenCaptureWidget.of(context).captureImage();
 
     var test = await testTicket();
     final image = decodeImage(captureResult.data);
-    test.image(image);
-    test.feed(2);
+    test.image(copyResize(image, width: 500, height: image.height));
     // test.imageRaster(image);
     test.cut();
     // DEMO RECEIPT
-    final res = await printerManager.printTicket(test);
+    //final res = await printerManager.printTicket(test,chunkSizeBytes: 50,queueSleepTimeMs: 0);
   }
 
   @override
@@ -121,24 +117,52 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return CaptureWidget(
-        key: _captureKey,
+    return OffScreenCaptureWidget(
         capture: Material(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(0.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text('عنوان'),
+                Text('عنوان',style:Theme.of(context).textTheme.title,),
                 Container(
-                  width: 250,
-                                  child: Table(
+                  child: Table(
                     border: TableBorder.all(color: Colors.black),
                     children: [
                       TableRow(children: [
                         Text('Cell 1'),
                         Text('Cell 2'),
                         Text('Cell 3'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
                       ]),
                       TableRow(children: [
                         Text('Cell 4'),
@@ -152,103 +176,137 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(widget.title),
-          ),
-          body: Column(
-            children: <Widget>[
-              RaisedButton(
-                onPressed: () async {
-                  final captureResult =
-                      await _captureKey.currentState.captureImage();
+        child: Builder(
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+              title: Text(widget.title),
+            ),
+            body: Column(
+              children: <Widget>[
+                RaisedButton(
+                  onPressed: () async {
+                    final captureResult =
+                        await OffScreenCaptureWidget.of(context).captureImage();
 
-                  await mobilePosPlugin.init();
-                  mobilePosPlugin.print(captureResult.data, (data) {
-                    print(data);
-                  });
-                },
-                child: Text('print via default termal printer'),
-              ),
-              RaisedButton(
-                onPressed: () async {
-                  final PrinterNetworkManager netPrinterManager =
-                      PrinterNetworkManager();
-                  netPrinterManager.selectPrinter('192.168.1.108', port: 9100);
-                  final captureResult =
-                      await _captureKey.currentState.captureImage();
+                    await mobilePosPlugin.init();
 
-                  var test = await testTicket();
-                  final image = decodeImage(captureResult.data);
-                  test.image(image);
-                  // test.imageRaster(image);
-                  test.cut();
-                  final resutl = await netPrinterManager.printTicket(test);
-                  print(resutl);
-                },
-                child: Text('print via wifi'),
-              ),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: _devices.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        onTap: () => _testPrint(_devices[index]),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              height: 60,
-                              padding: EdgeInsets.only(left: 10),
-                              alignment: Alignment.centerLeft,
-                              child: Row(
-                                children: <Widget>[
-                                  Icon(Icons.print),
-                                  SizedBox(width: 10),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(_devices[index].name ?? ''),
-                                        Text(_devices[index].address),
-                                        Text(
-                                          'Click to print a test receipt',
-                                          style: TextStyle(
-                                              color: Colors.grey[700]),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
+                    final image = decodeImage(captureResult.data);
+                    
+                  //  final img = copyResize(image, width: 500, height: image.height);
+
+                    mobilePosPlugin.print(captureResult.data, (data) {
+                      print(data);
+                    });
+                  },
+                  child: Text('print via default termal printer'),
+                ),
+                RaisedButton(
+                  onPressed: () async {
+                    final captureResult =
+                        await OffScreenCaptureWidget.of(context).captureImage();
+
+                    var test = await testTicket();
+                    final image = decodeImage(captureResult.data);
+
+                    print(image.width);
+
+                    test.image(
+                        copyResize(image, width: 500, height: image.height));
+                    // test.imageRaster(image);
+                    test.cut();
+                    printerManager.printTicket(test,chunkSizeBytes: 50,queueSleepTimeMs: 0);
+                  },
+                  child: Text('print via selected bluetoothDevice'),
+                ),
+                RaisedButton(
+                  onPressed: () async {
+                    final PrinterNetworkManager netPrinterManager =
+                        PrinterNetworkManager();
+                    netPrinterManager.selectPrinter('192.168.1.108',
+                        port: 9100);
+                    final captureResult =
+                        await OffScreenCaptureWidget.of(context).captureImage();
+
+                    var test = await testTicket();
+                    final image = decodeImage(captureResult.data);
+
+                    print(image.width);
+
+                    test.image(
+                        copyResize(image, width: 520, height: image.height));
+                    // test.imageRaster(image);
+                    test.cut();
+                    final resutl = await netPrinterManager.printTicket(test);
+                    print(resutl);
+                  },
+                  child: Text('print via wifi'),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: _devices.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return InkWell(
+                          onTap: () async {
+                            printerManager = BluetoothPrinterManager(
+                                address: _devices[index].address);
+                            await printerManager.connect();
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                height: 60,
+                                padding: EdgeInsets.only(left: 10),
+                                alignment: Alignment.centerLeft,
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(Icons.print),
+                                    SizedBox(width: 10),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(_devices[index].name ?? ''),
+                                          Text(_devices[index].address),
+                                          Text(
+                                            'Click to print a test receipt',
+                                            style: TextStyle(
+                                                color: Colors.grey[700]),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                            Divider(),
-                          ],
-                        ),
-                      );
-                    }),
-              ),
-            ],
-          ),
-          floatingActionButton: StreamBuilder<bool>(
-            stream: printerManager.isScanningStream,
-            initialData: false,
-            builder: (c, snapshot) {
-              if (snapshot.data) {
-                return FloatingActionButton(
-                  child: Icon(Icons.stop),
-                  onPressed: _stopScanDevices,
-                  backgroundColor: Colors.red,
-                );
-              } else {
-                return FloatingActionButton(
-                  child: Icon(Icons.search),
-                  onPressed: _startScanDevices,
-                );
-              }
-            },
+                              Divider(),
+                            ],
+                          ),
+                        );
+                      }),
+                ),
+              ],
+            ),
+            floatingActionButton: StreamBuilder<bool>(
+              stream: discoveryManager.isScanningStream,
+              initialData: false,
+              builder: (c, snapshot) {
+                if (snapshot.data) {
+                  return FloatingActionButton(
+                    child: Icon(Icons.stop),
+                    onPressed: _stopScanDevices,
+                    backgroundColor: Colors.red,
+                  );
+                } else {
+                  return FloatingActionButton(
+                    child: Icon(Icons.search),
+                    onPressed: _startScanDevices,
+                  );
+                }
+              },
+            ),
           ),
         ));
   }
