@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import 'package:pos_sdk/src/models/models.dart';
+import 'package:image/image.dart' as image;
 
 class CaptureWidget extends StatefulWidget {
   final Widget child;
@@ -53,13 +54,32 @@ class CaptureWidgetState extends State<CaptureWidget> {
     _boundaryKey = GlobalKey();
   }
 
-  Future<CaptureResult> captureImage() async {
+  // Future<CaptureResult> captureImage() async {
+  //   final pixelRatio = MediaQuery.of(context).devicePixelRatio;
+  //   final boundary =
+  //       _boundaryKey.currentContext.findRenderObject() as RenderRepaintBoundary;
+  //   final image = await boundary.toImage(pixelRatio: pixelRatio);
+  //   final data = await image.toByteData(format: ui.ImageByteFormat.png);
+  //   return CaptureResult(data.buffer.asUint8List(), image.width, image.height,null);
+  // }
+
+    Future<CaptureResult> captureImage({int width = 384}) async {
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
     final boundary =
         _boundaryKey.currentContext.findRenderObject() as RenderRepaintBoundary;
-    final image = await boundary.toImage(pixelRatio: pixelRatio);
-    final data = await image.toByteData(format: ui.ImageByteFormat.png);
-    return CaptureResult(data.buffer.asUint8List(), image.width, image.height,null);
+    final img = await boundary.toImage(pixelRatio: pixelRatio);
+    final data = await img.toByteData(format: ui.ImageByteFormat.png);
+
+    image.Image baseSizeImage = image.decodeImage(data.buffer.asUint8List());
+    image.Image resizeImage =
+        image.copyResize(baseSizeImage, width: width, height: img.height);
+    ui.Codec codec =
+        await ui.instantiateImageCodec(image.encodePng(resizeImage));
+    ui.FrameInfo frameInfo = await codec.getNextFrame();
+
+ final resizeData = await frameInfo.image.toByteData(format: ui.ImageByteFormat.png);
+    return CaptureResult(
+        resizeData.buffer.asUint8List(), frameInfo.image.width,  frameInfo.image.height, resizeImage);
   }
 
   @override
