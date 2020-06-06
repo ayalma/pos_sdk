@@ -26,7 +26,7 @@ class BlutoothDiscoveryScreen extends StatefulWidget {
 }
 
 class _BlutoothDiscoveryScreenState extends State<BlutoothDiscoveryScreen> {
-  List<PrinterBluetooth> _devices = [];
+
   BluetoothDiscoveryManager _discoveryManager = BluetoothDiscoveryManager();
 
   @override
@@ -73,10 +73,10 @@ class _BlutoothDiscoveryScreenState extends State<BlutoothDiscoveryScreen> {
           stream: _discoveryManager.scanResults,
           builder: (context, snapshot) {
             return ListView.builder(
-              itemCount: _devices.length,
+              itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) =>
                   BluetoothDeviceWidget(
-                device: _devices[index],
+                device: snapshot.data[index],
                 onSelect: widget.onSelect,
               ),
             );
