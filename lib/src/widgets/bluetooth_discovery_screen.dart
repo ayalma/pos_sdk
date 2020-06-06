@@ -77,7 +77,9 @@ class _BlutoothDiscoveryScreenState extends State<BlutoothDiscoveryScreen> {
               itemBuilder: (BuildContext context, int index) =>
                   BluetoothDeviceWidget(
                 device: snapshot.data[index],
-                onSelect: widget.onSelect,
+                onSelect:(device){
+                  Navigator.of(context).pop<PrinterBluetooth>(device);
+                },
               ),
             );
           }));

@@ -21,7 +21,6 @@ class BluetoothDeviceWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            height: 60,
             padding: EdgeInsets.only(left: 10),
             alignment: Alignment.centerLeft,
             child: Row(
@@ -34,9 +33,9 @@ class BluetoothDeviceWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(device.name ?? ''),
-                      Text(device.address),
+                      Text(device.address ?? ''),
                       Text(
-                        device.type.stringValue,
+                        device.type.stringValue ?? '',
                         style: TextStyle(color: Colors.grey[700]),
                       ),
                     ],
