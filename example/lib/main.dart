@@ -241,8 +241,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
                           onTap: () async {
-                            printerManager = BluetoothPrinterManager(
-                                address: _devices[index].address);
+                            printerManager = BluetoothPrinterManager();
                             await printerManager.connect();
                           },
                           child: Column(
