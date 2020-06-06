@@ -25,7 +25,7 @@ class PosSdkManager {
       PrinterType printerType}) async {
     networkPrinterManager.selectPrinter(ipAddress, port: port);
     bluetoothPrinterManager.selectPrinter(bluetoothAddress);
-    _hostApp = await mobilePosPlugin.init();
+    hostApp = await mobilePosPlugin.init();
     this._printerType = printerType;
   }
 
