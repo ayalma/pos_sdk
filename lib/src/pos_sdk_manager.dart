@@ -10,7 +10,7 @@ class PosSdkManager {
   MobilePosPlugin mobilePosPlugin;
   PrinterNetworkManager networkPrinterManager;
   PrinterType _printerType;
-  HostApp _hostApp;
+  HostApp hostApp;
 
   PosSdkManager() {
     bluetoothPrinterManager = BluetoothPrinterManager();
@@ -18,7 +18,7 @@ class PosSdkManager {
     networkPrinterManager = PrinterNetworkManager();
   }
 
-  void init(
+  Future<void> init(
       {String ipAddress,
       String bluetoothAddress,
       int port,
