@@ -5,10 +5,19 @@ import 'package:pos_sdk/src/widgets/bluetooth_device_widget.dart';
 class BlutoothDiscoveryScreen extends StatefulWidget {
   static const route = 'bluetooth_discovery_state';
   final OnSelect onSelect;
+  final String title;
+  final String searchTitle;
+  final String stopTitle;
   BlutoothDiscoveryScreen({
     Key key,
     @required this.onSelect,
+    @required this.title,
+    @required this.searchTitle,
+    @required this.stopTitle,
   })  : assert(onSelect != null),
+        assert(title != null),
+        assert(searchTitle != null),
+        assert(stopTitle != null),
         super(key: key);
 
   @override
@@ -43,6 +52,22 @@ class _BlutoothDiscoveryScreenState extends State<BlutoothDiscoveryScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+      appBar: AppBar(title: Text(widget.title)),
+      floatingActionButton: StreamBuilder<bool>(
+          initialData: false,
+          stream: _discoveryManager.isScanningStream,
+          builder: (context, snapshot) {
+            bool isScanning = snapshot.data;
+            return FloatingActionButton.extended(
+              icon: Icon(isScanning ? Icons.stop : Icons.search),
+              onPressed: () {
+                isScanning ? _stopScanDevices() : _startScanDevices();
+              },
+              label: Text(
+                isScanning ? widget.stopTitle : widget.searchTitle,
+              ),
+            );
+          }),
       body: StreamBuilder<List<PrinterBluetooth>>(
           initialData: [],
           stream: _discoveryManager.scanResults,
