@@ -4,18 +4,15 @@ import 'package:pos_sdk/src/widgets/bluetooth_device_widget.dart';
 
 class BlutoothDiscoveryScreen extends StatefulWidget {
   static const route = 'bluetooth_discovery_state';
-  final OnSelect onSelect;
   final String title;
   final String searchTitle;
   final String stopTitle;
   BlutoothDiscoveryScreen({
     Key key,
-    @required this.onSelect,
     @required this.title,
     @required this.searchTitle,
     @required this.stopTitle,
-  })  : assert(onSelect != null),
-        assert(title != null),
+  })  : assert(title != null),
         assert(searchTitle != null),
         assert(stopTitle != null),
         super(key: key);
@@ -26,7 +23,6 @@ class BlutoothDiscoveryScreen extends StatefulWidget {
 }
 
 class _BlutoothDiscoveryScreenState extends State<BlutoothDiscoveryScreen> {
-
   BluetoothDiscoveryManager _discoveryManager = BluetoothDiscoveryManager();
 
   @override
@@ -77,7 +73,7 @@ class _BlutoothDiscoveryScreenState extends State<BlutoothDiscoveryScreen> {
               itemBuilder: (BuildContext context, int index) =>
                   BluetoothDeviceWidget(
                 device: snapshot.data[index],
-                onSelect:(device){
+                onSelect: (device) {
                   Navigator.of(context).pop<PrinterBluetooth>(device);
                 },
               ),
