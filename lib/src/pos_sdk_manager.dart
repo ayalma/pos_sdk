@@ -1,5 +1,6 @@
 import 'package:esc_pos_blue/esc_pos_bluetooth.dart' hide PosPrintResult;
 import 'package:esc_pos_printer/esc_pos_printer.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mobile_pos_plugin/mobile_pos_plugin.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:pos_sdk/src/models/capture_result.dart';
@@ -26,6 +27,18 @@ class PosSdkManager {
     networkPrinterManager.selectPrinter(ipAddress, port: port);
     bluetoothPrinterManager.selectPrinter(bluetoothAddress);
     hostApp = await mobilePosPlugin.init();
+    this._printerType = printerType;
+  }
+
+  updateNetworkPrinter({@required String address, @required int port}) {
+    networkPrinterManager.selectPrinter(address, port: port);
+  }
+
+  updateBluetoothAddress({@required String address}) {
+    bluetoothPrinterManager.selectPrinter(address);
+  }
+
+  updatePrinterType({@required PrinterType printerType}) {
     this._printerType = printerType;
   }
 
