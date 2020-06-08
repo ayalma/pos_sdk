@@ -4,6 +4,7 @@ import 'package:image/image.dart' as image;
 import 'package:flutter/rendering.dart';
 import 'package:pos_sdk/src/models/models.dart';
 
+@deprecated 
 class OffScreenCaptureWidget extends StatefulWidget {
   final Widget child;
   final Widget capture;
