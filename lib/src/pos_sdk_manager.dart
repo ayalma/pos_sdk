@@ -65,4 +65,7 @@ class PosSdkManager {
         break;
     }
   }
+
+  Future<List<String>> openCardReader() =>
+      mobilePosPlugin.openMagneticStripeCardReader();
 }
