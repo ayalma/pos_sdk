@@ -12,6 +12,7 @@ class PosSdkManager {
   PrinterNetworkManager networkPrinterManager;
   PrinterType _printerType;
   HostApp hostApp;
+  bool isChunked;
 
   PosSdkManager() {
     bluetoothPrinterManager = BluetoothPrinterManager();
@@ -23,11 +24,16 @@ class PosSdkManager {
       {String ipAddress,
       String bluetoothAddress,
       int port,
-      PrinterType printerType}) async {
+      PrinterType printerType,
+      bool isChunked = true}) async {
     networkPrinterManager.selectPrinter(ipAddress, port: port);
     bluetoothPrinterManager.selectPrinter(bluetoothAddress);
     hostApp = await mobilePosPlugin.init();
     this._printerType = printerType;
+  }
+
+  updateIsChunked(bool isChunked) {
+    this.isChunked = isChunked;
   }
 
   updateNetworkPrinter({@required String address, @required int port}) {
@@ -48,7 +54,14 @@ class PosSdkManager {
         final Ticket ticket = Ticket(PaperSize.mm80);
         ticket.image(captureResult.image);
         ticket.cut(mode: PosCutMode.partial);
-        var result = await bluetoothPrinterManager.printTicket(ticket);
+
+        if (!bluetoothPrinterManager.isConnected())
+          bluetoothPrinterManager.connect();
+
+        var result = await bluetoothPrinterManager.printTicket(
+          ticket,
+          isChunked: this.isChunked,
+        );
         //todo : refactor
         return PosPrintResult.success;
         break;
