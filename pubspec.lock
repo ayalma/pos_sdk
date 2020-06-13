@@ -76,7 +76,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "129dc6172b19af5ea15a3c99c92ea50e84e7176f"
+      resolved-ref: dbe31d8aceda6494db9d4e8f6c2693d3d2628b9d
       url: "https://github.com/ayalma/esc_pos_blue.git"
     source: git
     version: "0.2.8"
@@ -158,7 +158,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: ebfbc847f08016c82ad4e1ad639fa0911d5afe2c
+      resolved-ref: b40ee7e7cc8859b4e216310f382776c5d308b151
       url: "https://github.com/ayalma/mobile_pos_plugin.git"
     source: git
     version: "0.0.1"
