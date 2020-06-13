@@ -30,6 +30,7 @@ class PosSdkManager {
     bluetoothPrinterManager.selectPrinter(bluetoothAddress);
     hostApp = await mobilePosPlugin.init();
     this._printerType = printerType;
+    this.isChunked = isChunked;
   }
 
   updateIsChunked(bool isChunked) {
