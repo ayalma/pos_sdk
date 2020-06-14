@@ -102,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var test = await testTicket();
 
-   // test.image(captureResult.image);
+    // test.image(captureResult.image);
     test.imageRaster(captureResult.image);
     test.cut();
     // DEMO RECEIPT
@@ -146,19 +146,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 RaisedButton(
                   onPressed: () async {
-                    final captureResult =
-                       await ((capture as StatelessWidget).build(context).captureImage(context,
-                                size: Size(250, 900), devicePixelRatio: 2.0));
+                    final captureResult = await ((capture as StatelessWidget)
+                        .build(context)
+                        .captureImage(context,
+                            size: Size(250, 900), devicePixelRatio: 2.0));
 
                     var test = await testTicket();
-                  
 
-                   // test.image(captureResult.image);
-                     test.imageRaster(captureResult.image);
+                    // test.image(captureResult.image);
+                    test.imageRaster(captureResult.image);
                     test.cut();
                     printerManager.printTicket(test,
                         chunkSizeBytes: 50,
-                        queueSleepTimeMs: 0,
+                        queueSleepTimeMs: 20,
                         isChunked: false);
                   },
                   child: Text('print via selected bluetoothDevice'),
@@ -271,75 +271,72 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-
-
-
-
 class Capture extends StatelessWidget {
   const Capture({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-     return Material(
-          child: Padding(
-            padding: const EdgeInsets.all(0.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  'عنوان',
-                  style: Theme.of(context).textTheme.title,
-                ),
-                Container(
-                  child: Table(
-                    border: TableBorder.all(color: Colors.black),
-                    children: [
-                      TableRow(children: [
-                        Text('فراموشی '),
-                        Text('Cell 2'),
-                        Text('Cell 3'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ])
-                    ],
-                  ),
-                ),
-              ],
+    return Container(
+      color: Colors.transparent,
+      child: Padding(
+        padding: const EdgeInsets.all(0.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              'عنوان',
+              style: Theme.of(context).textTheme.title,
             ),
-          ),
-        );
+            Container(
+              child: Table(
+                border: TableBorder.all(color: Colors.black),
+                children: [
+                  TableRow(children: [
+                    Text('فراموشی '),
+                    Text('Cell 2'),
+                    Text('Cell 3'),
+                  ]),
+                  TableRow(children: [
+                    Text('Cell 4'),
+                    Text('Cell 5'),
+                    Text('Cell 6'),
+                  ]),
+                  TableRow(children: [
+                    Text('Cell 4'),
+                    Text('Cell 5'),
+                    Text('Cell 6'),
+                  ]),
+                  TableRow(children: [
+                    Text('Cell 4'),
+                    Text('Cell 5'),
+                    Text('Cell 6'),
+                  ]),
+                  TableRow(children: [
+                    Text('Cell 4'),
+                    Text('Cell 5'),
+                    Text('Cell 6'),
+                  ]),
+                  TableRow(children: [
+                    Text('Cell 4'),
+                    Text('Cell 5'),
+                    Text('Cell 6'),
+                  ]),
+                  TableRow(children: [
+                    Text('Cell 4'),
+                    Text('Cell 5'),
+                    Text('Cell 6'),
+                  ]),
+                  TableRow(children: [
+                    Text('Cell 4'),
+                    Text('Cell 5'),
+                    Text('Cell 6'),
+                  ])
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
