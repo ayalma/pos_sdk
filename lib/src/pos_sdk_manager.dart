@@ -53,6 +53,9 @@ class PosSdkManager {
     switch (_printerType) {
       case PrinterType.Bluetooth:
         final Ticket ticket = Ticket(PaperSize.mm80);
+        if(isChunked)
+        ticket.image(captureResult.image);
+        else
         ticket.imageRaster(captureResult.image);
         ticket.cut(mode: PosCutMode.partial);
 

@@ -102,8 +102,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var test = await testTicket();
 
-    test.image(captureResult.image);
-    // test.imageRaster(image);
+   // test.image(captureResult.image);
+    test.imageRaster(captureResult.image);
     test.cut();
     // DEMO RECEIPT
     //final res = await printerManager.printTicket(test,chunkSizeBytes: 50,queueSleepTimeMs: 0);
@@ -117,68 +117,10 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    final capture = Capture();
+
     return OffScreenCaptureWidget(
-        capture: Material(
-          child: Padding(
-            padding: const EdgeInsets.all(0.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  'عنوان',
-                  style: Theme.of(context).textTheme.title,
-                ),
-                Container(
-                  child: Table(
-                    border: TableBorder.all(color: Colors.black),
-                    children: [
-                      TableRow(children: [
-                        Text('فراموشی '),
-                        Text('Cell 2'),
-                        Text('Cell 3'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ]),
-                      TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ])
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        capture: capture,
         child: Builder(
           builder: (context) => Scaffold(
             appBar: AppBar(
@@ -189,7 +131,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 RaisedButton(
                   onPressed: () async {
                     final captureResult =
-                        await OffScreenCaptureWidget.of(context).captureImage(width: PaperSize.mm80.width);
+                        await OffScreenCaptureWidget.of(context)
+                            .captureImage(width: PaperSize.mm80.width);
 
                     await mobilePosPlugin.init();
 
@@ -204,15 +147,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 RaisedButton(
                   onPressed: () async {
                     final captureResult =
-                        await OffScreenCaptureWidget.of(context).captureImage(width: PaperSize.mm58.width);
+                       await ((capture as StatelessWidget).build(context).captureImage(context,
+                                size: Size(250, 900), devicePixelRatio: 2.0));
 
                     var test = await testTicket();
-      
-                    test.image(captureResult.image);
-                    // test.imageRaster(image);
+                  
+
+                   // test.image(captureResult.image);
+                     test.imageRaster(captureResult.image);
                     test.cut();
                     printerManager.printTicket(test,
-                        chunkSizeBytes: 50, queueSleepTimeMs: 0);
+                        chunkSizeBytes: 50,
+                        queueSleepTimeMs: 0,
+                        isChunked: false);
                   },
                   child: Text('print via selected bluetoothDevice'),
                 ),
@@ -223,7 +170,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     netPrinterManager.selectPrinter('192.168.1.108',
                         port: 9100);
                     final captureResult =
-                        await OffScreenCaptureWidget.of(context).captureImage(width: PaperSize.mm80.width);
+                        await OffScreenCaptureWidget.of(context)
+                            .captureImage(width: PaperSize.mm80.width);
 
                     var test = await testTicket();
 
@@ -242,7 +190,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         return InkWell(
                           onTap: () async {
                             printerManager = BluetoothPrinterManager();
-                            await printerManager.connect();
+                            printerManager
+                                .selectPrinter(_devices[index].address);
+                            if (!printerManager.isConnected())
+                              printerManager.connect();
+                            //printerManager.printTicket(ticket)
                           },
                           child: Column(
                             children: <Widget>[
@@ -316,5 +268,78 @@ class _MyHomePageState extends State<MyHomePage> {
     //     styles: PosStyles(codeTable: PosCodeTable.iran1));
 
     return ticket;
+  }
+}
+
+
+
+
+
+class Capture extends StatelessWidget {
+  const Capture({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+     return Material(
+          child: Padding(
+            padding: const EdgeInsets.all(0.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  'عنوان',
+                  style: Theme.of(context).textTheme.title,
+                ),
+                Container(
+                  child: Table(
+                    border: TableBorder.all(color: Colors.black),
+                    children: [
+                      TableRow(children: [
+                        Text('فراموشی '),
+                        Text('Cell 2'),
+                        Text('Cell 3'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
+                      ]),
+                      TableRow(children: [
+                        Text('Cell 4'),
+                        Text('Cell 5'),
+                        Text('Cell 6'),
+                      ])
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
   }
 }
