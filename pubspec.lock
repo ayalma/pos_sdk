@@ -76,7 +76,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: eff9d762f26cb90d33520b9a5d8cd98503a1b4cf
+      resolved-ref: e1e2ad619f3aebeda52f980a2c03f9129a4566c8
       url: "https://github.com/ayalma/esc_pos_blue.git"
     source: git
     version: "0.2.8"

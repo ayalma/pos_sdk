@@ -41,8 +41,8 @@ class PosSdkManager {
     networkPrinterManager.selectPrinter(address, port: port);
   }
 
-  updateBluetoothAddress({@required String address}) {
-    bluetoothPrinterManager.selectPrinter(address);
+  Future<void> updateBluetoothAddress({@required String address}) async{
+    await bluetoothPrinterManager.selectPrinter(address);
   }
 
   updatePrinterType({@required PrinterType printerType}) {
