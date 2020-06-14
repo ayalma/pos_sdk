@@ -13,6 +13,8 @@ class PosSdkManager {
   PrinterType _printerType;
   HostApp hostApp;
   bool isChunked;
+  String _networkPrinterAddress;
+  int _networkPrinterPort;
 
   PosSdkManager() {
     bluetoothPrinterManager = BluetoothPrinterManager();
@@ -26,6 +28,8 @@ class PosSdkManager {
       int port,
       PrinterType printerType,
       bool isChunked = true}) async {
+    _networkPrinterAddress = ipAddress;
+    _networkPrinterPort = port;
     networkPrinterManager.selectPrinter(ipAddress, port: port);
     bluetoothPrinterManager.selectPrinter(bluetoothAddress);
     hostApp = await mobilePosPlugin.init();
@@ -41,12 +45,25 @@ class PosSdkManager {
     networkPrinterManager.selectPrinter(address, port: port);
   }
 
-  Future<void> updateBluetoothAddress({@required String address}) async{
+  Future<void> updateBluetoothAddress({@required String address}) async {
     await bluetoothPrinterManager.selectPrinter(address);
   }
 
   updatePrinterType({@required PrinterType printerType}) {
     this._printerType = printerType;
+  }
+
+  Future<PosPrintResult> printViaNetwork(
+      CaptureResult captureResult, String host,
+      {int port = 9100}) async {
+    final Ticket ticket = Ticket(PaperSize.mm80);
+    ticket.image(captureResult.image);
+    ticket.cut(mode: PosCutMode.partial);
+    networkPrinterManager.selectPrinter(host, port: port);
+    final printResult = await networkPrinterManager.printTicket(ticket);
+    networkPrinterManager.selectPrinter(_networkPrinterAddress,
+        port: _networkPrinterPort);
+    return printResult;
   }
 
   Future<PosPrintResult> print(CaptureResult captureResult) async {
