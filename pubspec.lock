@@ -158,7 +158,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: f4ab187b4ebcf80eb98f7ac251b7011639d4fb82
+      resolved-ref: "7812e7014fa06e8083e5d6ce54628cc7e524a764"
       url: "https://github.com/ayalma/mobile_pos_plugin.git"
     source: git
     version: "0.0.1"
