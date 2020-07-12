@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () async {
                     final captureResult =
                         await OffScreenCaptureWidget.of(context)
-                            .captureImage(width: PaperSize.mm80.width);
+                            .captureImage(width: 381);
 
                     await mobilePosPlugin.init();
 
@@ -276,65 +276,67 @@ class Capture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      child: Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              'عنوان',
-              style: Theme.of(context).textTheme.title,
-            ),
-            Container(
-              child: Table(
-                border: TableBorder.all(color: Colors.black),
-                children: [
-                  TableRow(children: [
-                    Text('فراموشی '),
-                    Text('Cell 2'),
-                    Text('Cell 3'),
-                  ]),
-                  TableRow(children: [
-                    Text('Cell 4'),
-                    Text('Cell 5'),
-                    Text('Cell 6'),
-                  ]),
-                  TableRow(children: [
-                    Text('Cell 4'),
-                    Text('Cell 5'),
-                    Text('Cell 6'),
-                  ]),
-                  TableRow(children: [
-                    Text('Cell 4'),
-                    Text('Cell 5'),
-                    Text('Cell 6'),
-                  ]),
-                  TableRow(children: [
-                    Text('Cell 4'),
-                    Text('Cell 5'),
-                    Text('Cell 6'),
-                  ]),
-                  TableRow(children: [
-                    Text('Cell 4'),
-                    Text('Cell 5'),
-                    Text('Cell 6'),
-                  ]),
-                  TableRow(children: [
-                    Text('Cell 4'),
-                    Text('Cell 5'),
-                    Text('Cell 6'),
-                  ]),
-                  TableRow(children: [
-                    Text('Cell 4'),
-                    Text('Cell 5'),
-                    Text('Cell 6'),
-                  ])
-                ],
+    return Material(
+      child: Container(
+        color: Colors.transparent,
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                'عنوان',
+                style: Theme.of(context).textTheme.title,
               ),
-            ),
-          ],
+              Container(
+                child: Table(
+                  border: TableBorder.all(color: Colors.black),
+                  children: [
+                    TableRow(children: [
+                      Text('فراموشی '),
+                      Text('Cell 2'),
+                      Text('Cell 3'),
+                    ]),
+                    TableRow(children: [
+                      Text('Cell 4'),
+                      Text('Cell 5'),
+                      Text('Cell 6'),
+                    ]),
+                    TableRow(children: [
+                      Text('Cell 4'),
+                      Text('Cell 5'),
+                      Text('Cell 6'),
+                    ]),
+                    TableRow(children: [
+                      Text('Cell 4'),
+                      Text('Cell 5'),
+                      Text('Cell 6'),
+                    ]),
+                    TableRow(children: [
+                      Text('Cell 4'),
+                      Text('Cell 5'),
+                      Text('Cell 6'),
+                    ]),
+                    TableRow(children: [
+                      Text('Cell 4'),
+                      Text('Cell 5'),
+                      Text('Cell 6'),
+                    ]),
+                    TableRow(children: [
+                      Text('Cell 4'),
+                      Text('Cell 5'),
+                      Text('Cell 6'),
+                    ]),
+                    TableRow(children: [
+                      Text('Cell 4'),
+                      Text('Cell 5'),
+                      Text('Cell 6'),
+                    ])
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
