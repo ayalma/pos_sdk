@@ -27,12 +27,13 @@ class PosSdkManager {
       String bluetoothAddress,
       int port,
       PrinterType printerType,
-      bool isChunked = true}) async {
+      bool isChunked = true,
+      SdkType sdkType}) async {
     _networkPrinterAddress = ipAddress;
     _networkPrinterPort = port;
     networkPrinterManager.selectPrinter(ipAddress, port: port);
     bluetoothPrinterManager.selectPrinter(bluetoothAddress);
-    hostApp = await mobilePosPlugin.init();
+    hostApp = await mobilePosPlugin.init(sdkType);
     this._printerType = printerType;
     this.isChunked = isChunked;
   }

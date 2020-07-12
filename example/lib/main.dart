@@ -134,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         await OffScreenCaptureWidget.of(context)
                             .captureImage(width: 381);
 
-                    await mobilePosPlugin.init();
+                    await mobilePosPlugin.init(SdkType.Pne);
 
                     //  final img = copyResize(image, width: 500, height: image.height);
 
