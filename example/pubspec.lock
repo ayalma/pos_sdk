@@ -163,11 +163,9 @@ packages:
   mobile_pos_plugin:
     dependency: transitive
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "1c6a1d3e16727e44dc369d99ed14291735d27d52"
-      url: "https://github.com/ayalma/mobile_pos_plugin.git"
-    source: git
+      path: "../../mobile_pos_plugin"
+      relative: true
+    source: path
     version: "0.0.1"
   path:
     dependency: transitive

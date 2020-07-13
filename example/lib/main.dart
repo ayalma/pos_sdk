@@ -128,6 +128,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             body: Column(
               children: <Widget>[
+                FutureBuilder(
+                  builder: (context, data) {
+                    if (data == null) return Container();
+                    return Text(data.data.toString());
+                  },
+                  future: mobilePosPlugin.getPrinterStatus(),
+                ),
                 RaisedButton(
                   onPressed: () async {
                     final captureResult =
