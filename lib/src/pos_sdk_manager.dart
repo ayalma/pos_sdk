@@ -54,6 +54,10 @@ class PosSdkManager {
     this._printerType = printerType;
   }
 
+  updateSdkType({@required SdkType sdkType}) {
+    mobilePosPlugin.init(sdkType);
+  }
+
   Future<PosPrintResult> printViaNetwork(
       CaptureResult captureResult, String host,
       {int port = 9100}) async {
