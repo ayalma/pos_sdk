@@ -14,8 +14,8 @@ dependencies:
   esc_pos_blue: 
     git: https://github.com/ayalma/esc_pos_blue.git
   mobile_pos_plugin: 
-    path : ../mobile_pos_plugin
-    #git: https://github.com/ayalma/mobile_pos_plugin.git
+    #path : ../mobile_pos_plugin
+    git: https://github.com/ayalma/mobile_pos_plugin.git
   charset_converter: ^1.0.3
 
 dev_dependencies:

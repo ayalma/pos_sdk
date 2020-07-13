@@ -70,6 +70,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     mobilePosPlugin = MobilePosPlugin();
+    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) async {
+      await mobilePosPlugin.init(SdkType.Pne);
+      setState(() {});
+    });
+
     discoveryManager.scanResults.listen((devices) async {
       // print('UI: Devices found ${devices.length}');
       setState(() {
@@ -141,13 +146,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         await OffScreenCaptureWidget.of(context)
                             .captureImage(width: 381);
 
-                    await mobilePosPlugin.init(SdkType.Pne);
-
                     //  final img = copyResize(image, width: 500, height: image.height);
 
-                    mobilePosPlugin.print(captureResult.data, (data) {
-                      print(data);
-                    });
+                    final result =
+                        await mobilePosPlugin.printAsync(captureResult.data);
+                    print(result);
                   },
                   child: Text('print via default termal printer'),
                 ),
