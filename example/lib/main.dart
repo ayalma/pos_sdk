@@ -122,7 +122,10 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    final capture = Capture();
+    final capture = SizedBox(
+      child: Capture(),
+      height: 1000,
+    );
 
     return OffScreenCaptureWidget(
         capture: capture,
@@ -142,9 +145,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 RaisedButton(
                   onPressed: () async {
-                    final captureResult =
-                        await OffScreenCaptureWidget.of(context)
-                            .captureImage(width: 381);
+                    final captureResult = await (capture as Widget)
+                        .captureImage(context,
+                            size: Size(190, 0), devicePixelRatio: 2.0);
 
                     //  final img = copyResize(image, width: 500, height: image.height);
 
@@ -156,10 +159,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 RaisedButton(
                   onPressed: () async {
-                    final captureResult = await ((capture as StatelessWidget)
-                        .build(context)
+                    final captureResult = await capture
+                        //
+                        // .build(context)
                         .captureImage(context,
-                            size: Size(250, 900), devicePixelRatio: 2.0));
+                            size: Size(190, 2978), devicePixelRatio: 2.0);
 
                     var test = await testTicket();
 
@@ -193,6 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   child: Text('print via wifi'),
                 ),
+                Expanded(child: Capture()),
                 Expanded(
                   child: ListView.builder(
                       itemCount: _devices.length,
@@ -290,64 +295,18 @@ class Capture extends StatelessWidget {
       child: Container(
         color: Colors.transparent,
         child: Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                'عنوان',
-                style: Theme.of(context).textTheme.title,
+            padding: const EdgeInsets.all(0.0),
+            child: Container(
+              alignment: Alignment.center,
+              height: double.infinity,
+              width: double.infinity,
+              child: Image.network(
+                'http://192.168.1.107:5000/weatherforecast/test8', //TODO fill path
+                height: double.infinity,
+                width: double.infinity,
+                fit: BoxFit.fill,
               ),
-              Container(
-                child: Table(
-                  border: TableBorder.all(color: Colors.black),
-                  children: [
-                    TableRow(children: [
-                      Text('فراموشی '),
-                      Text('Cell 2'),
-                      Text('Cell 3'),
-                    ]),
-                    TableRow(children: [
-                      Text('Cell 4'),
-                      Text('Cell 5'),
-                      Text('Cell 6'),
-                    ]),
-                    TableRow(children: [
-                      Text('Cell 4'),
-                      Text('Cell 5'),
-                      Text('Cell 6'),
-                    ]),
-                    TableRow(children: [
-                      Text('Cell 4'),
-                      Text('Cell 5'),
-                      Text('Cell 6'),
-                    ]),
-                    TableRow(children: [
-                      Text('Cell 4'),
-                      Text('Cell 5'),
-                      Text('Cell 6'),
-                    ]),
-                    TableRow(children: [
-                      Text('Cell 4'),
-                      Text('Cell 5'),
-                      Text('Cell 6'),
-                    ]),
-                    TableRow(children: [
-                      Text('Cell 4'),
-                      Text('Cell 5'),
-                      Text('Cell 6'),
-                    ]),
-                    TableRow(children: [
-                      Text('Cell 4'),
-                      Text('Cell 5'),
-                      Text('Cell 6'),
-                    ])
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+            )),
       ),
     );
   }
