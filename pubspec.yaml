@@ -2,7 +2,6 @@ name: pos_sdk
 description: A new Flutter package project.
 version: 0.0.1
 author:
-homepage:
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -17,6 +16,9 @@ dependencies:
     #path : ../mobile_pos_plugin
     git: https://github.com/ayalma/mobile_pos_plugin.git
   charset_converter: ^1.0.3
+  aft_pos_sdk:
+    git: https://github.com/ayalma/aft_pos_sdk.git
+
 
 dev_dependencies:
   flutter_test:

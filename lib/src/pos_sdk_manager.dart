@@ -1,8 +1,10 @@
+import 'package:aft_pos_sdk/aft_pos_sdk.dart';
 import 'package:esc_pos_blue/esc_pos_bluetooth.dart' hide PosPrintResult;
 import 'package:esc_pos_printer/esc_pos_printer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_pos_plugin/mobile_pos_plugin.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
+import 'package:pos_sdk/src/models/aft_pos_type.dart';
 import 'package:pos_sdk/src/models/capture_result.dart';
 import 'package:pos_sdk/src/models/printer_type.dart';
 
@@ -11,10 +13,12 @@ class PosSdkManager {
   MobilePosPlugin mobilePosPlugin;
   PrinterNetworkManager networkPrinterManager;
   PrinterType _printerType;
+  AftPosType _aftPosType;
   HostApp hostApp;
   bool isChunked;
   String _networkPrinterAddress;
   int _networkPrinterPort;
+  AftPosConnection _connection;
 
   PosSdkManager() {
     bluetoothPrinterManager = BluetoothPrinterManager();
@@ -22,20 +26,34 @@ class PosSdkManager {
     networkPrinterManager = PrinterNetworkManager();
   }
 
-  Future<void> init(
-      {String ipAddress,
-      String bluetoothAddress,
-      int port,
-      PrinterType printerType,
-      bool isChunked = true,
-      SdkType sdkType}) async {
+  Future<void> init({
+    String ipAddress,
+    String bluetoothAddress,
+    int port,
+    PrinterType printerType,
+    bool isChunked = true,
+    SdkType sdkType,
+    AftPosType aftPosType,
+    String aftPosIp,
+    int aftPosPort,
+  }) async {
     _networkPrinterAddress = ipAddress;
     _networkPrinterPort = port;
     networkPrinterManager.selectPrinter(ipAddress, port: port);
     bluetoothPrinterManager.selectPrinter(bluetoothAddress);
     hostApp = await mobilePosPlugin.init(sdkType);
+    _connection = AftPosConnection(ip: aftPosIp, port: aftPosPort);
+    this._aftPosType = aftPosType;
     this._printerType = printerType;
     this.isChunked = isChunked;
+  }
+
+  updateAftPosIpAndPort(String aftPosIp, int aftPosPort) {
+    _connection = AftPosConnection(ip: aftPosIp, port: aftPosPort);
+  }
+
+  updateAftPosType(AftPosType aftPosType) {
+    _aftPosType = aftPosType;
   }
 
   updateIsChunked(bool isChunked) {
