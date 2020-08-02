@@ -17,8 +17,9 @@ dependencies:
     git: https://github.com/ayalma/mobile_pos_plugin.git
   charset_converter: ^1.0.3
   aft_pos_sdk:
-    path : ../aft_pos_sdk
-    #git: https://github.com/ayalma/aft_pos_sdk.git
+   
+    git: https://github.com/ayalma/aft_pos_sdk.git
+    #path : ../aft_pos_sdk
 
 
 dev_dependencies:

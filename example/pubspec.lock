@@ -4,9 +4,11 @@ packages:
   aft_pos_sdk:
     dependency: transitive
     description:
-      path: "../../aft_pos_sdk"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "369ebb4d3f71d0a21880df8f75ded7096bd5a0a3"
+      url: "https://github.com/ayalma/aft_pos_sdk.git"
+    source: git
     version: "0.2.8"
   archive:
     dependency: transitive
