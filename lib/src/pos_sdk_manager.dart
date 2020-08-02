@@ -144,7 +144,8 @@ class PosSdkManager {
       btlv.addTagValue(Tag.ST, "1=1002=200");
       btlv.addTagValue(Tag.AV, "ID1=1000ID2=2000");
 
-      _aftPosConnection.sendRequest(btlv);
+      var result = await _aftPosConnection.sendRequest(btlv);
+
       //await _aftPosConnection.response
       await _aftPosConnection.dispose();
     }

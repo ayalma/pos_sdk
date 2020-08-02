@@ -46,12 +46,23 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final PosSdkManager posSdkManager = Provider.of(context);
 
-    posSdkManager.purchase("", "90000");
     return Scaffold(
       appBar: AppBar(
         title: Text('Sdk manager test app'),
       ),
-      body: SingleChildScrollView(child: Column()),
+      body: SingleChildScrollView(
+          child: Column(
+        children: <Widget>[
+          RaisedButton.icon(
+              onPressed: () {
+                posSdkManager
+                    .purchase("", "90000")
+                    .then((value) => print(value));
+              },
+              icon: Icon(Icons.payment),
+              label: Text("Make payment"))
+        ],
+      )),
     );
   }
 }
