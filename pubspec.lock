@@ -4,11 +4,9 @@ packages:
   aft_pos_sdk:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "5c2cda6c875a4bf0dcabc50a4f8d579dfc633deb"
-      url: "https://github.com/ayalma/aft_pos_sdk.git"
-    source: git
+      path: "../aft_pos_sdk"
+      relative: true
+    source: path
     version: "0.2.8"
   archive:
     dependency: transitive
@@ -79,7 +77,7 @@ packages:
       name: csslib
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.16.1"
+    version: "0.16.2"
   esc_pos_blue:
     dependency: "direct main"
     description:

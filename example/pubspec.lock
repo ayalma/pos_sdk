@@ -4,11 +4,9 @@ packages:
   aft_pos_sdk:
     dependency: transitive
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "5c2cda6c875a4bf0dcabc50a4f8d579dfc633deb"
-      url: "https://github.com/ayalma/aft_pos_sdk.git"
-    source: git
+      path: "../../aft_pos_sdk"
+      relative: true
+    source: path
     version: "0.2.8"
   archive:
     dependency: transitive
@@ -79,7 +77,7 @@ packages:
       name: csslib
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.16.1"
+    version: "0.16.2"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -178,6 +176,13 @@ packages:
       url: "https://github.com/ayalma/mobile_pos_plugin.git"
     source: git
     version: "0.0.1"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   path:
     dependency: transitive
     description:
@@ -199,6 +204,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.3.1"
   quiver:
     dependency: transitive
     description:
@@ -283,4 +295,4 @@ packages:
     version: "3.6.1"
 sdks:
   dart: ">=2.7.0 <3.0.0"
-  flutter: ">=1.10.0 <2.0.0"
+  flutter: ">=1.16.0 <2.0.0"

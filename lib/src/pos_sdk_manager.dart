@@ -18,7 +18,7 @@ class PosSdkManager {
   bool isChunked;
   String _networkPrinterAddress;
   int _networkPrinterPort;
-  AftPosConnection _connection;
+  AftPosConnection _aftPosConnection;
 
   PosSdkManager() {
     bluetoothPrinterManager = BluetoothPrinterManager();
@@ -42,14 +42,14 @@ class PosSdkManager {
     networkPrinterManager.selectPrinter(ipAddress, port: port);
     bluetoothPrinterManager.selectPrinter(bluetoothAddress);
     hostApp = await mobilePosPlugin.init(sdkType);
-    _connection = AftPosConnection(ip: aftPosIp, port: aftPosPort);
+    _aftPosConnection = AftPosConnection(ip: aftPosIp, port: aftPosPort);
     this._aftPosType = aftPosType;
     this._printerType = printerType;
     this.isChunked = isChunked;
   }
 
   updateAftPosIpAndPort(String aftPosIp, int aftPosPort) {
-    _connection = AftPosConnection(ip: aftPosIp, port: aftPosPort);
+    _aftPosConnection = AftPosConnection(ip: aftPosIp, port: aftPosPort);
   }
 
   updateAftPosType(AftPosType aftPosType) {
@@ -125,4 +125,28 @@ class PosSdkManager {
 
   Future<List<String>> openCardReader() =>
       mobilePosPlugin.openMagneticStripeCardReader();
+
+  Future<PaymentResult> purchase(String invoiceNumber, String amount) async {
+    if (_aftPosType == AftPosType.Embedded) {
+      return mobilePosPlugin.purchase(invoiceNumber, amount, hostApp);
+    } else {
+      await _aftPosConnection.connect();
+      BTLV btlv = new BTLV();
+      btlv.addTagValue(Tag.PR, "000000");
+      btlv.addTagValue(Tag.AM, amount);
+      btlv.addTagValue(Tag.CU, "364");
+      btlv.addTagValue(Tag.T1, "");
+      btlv.addTagValue(Tag.R1, "");
+      btlv.addTagValue(Tag.T2, "");
+      btlv.addTagValue(Tag.R2, "");
+      btlv.addTagValue(Tag.SV, "");
+      btlv.addTagValue(Tag.SG, "");
+      btlv.addTagValue(Tag.ST, "1=1002=200");
+      btlv.addTagValue(Tag.AV, "ID1=1000ID2=2000");
+
+      _aftPosConnection.sendRequest(btlv);
+      //await _aftPosConnection.response
+      await _aftPosConnection.dispose();
+    }
+  }
 }
