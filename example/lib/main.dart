@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
           RaisedButton.icon(
               onPressed: () {
                 posSdkManager
-                    .purchase("", "90000")
+                    .purchase("", "1000")
                     .then((value) => print(value));
               },
               icon: Icon(Icons.payment),

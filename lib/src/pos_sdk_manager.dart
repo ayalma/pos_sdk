@@ -126,9 +126,9 @@ class PosSdkManager {
   Future<List<String>> openCardReader() =>
       mobilePosPlugin.openMagneticStripeCardReader();
 
-  Future<PaymentResult> purchase(String invoiceNumber, String amount) async {
+  Future<PosResponse> purchase(String invoiceNumber, String amount) async {
     if (_aftPosType == AftPosType.Embedded) {
-      return mobilePosPlugin.purchase(invoiceNumber, amount, hostApp);
+      mobilePosPlugin.purchase(invoiceNumber, amount, hostApp);
     } else {
       await _aftPosConnection.connect();
       BTLV btlv = new BTLV();

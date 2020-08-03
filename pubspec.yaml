@@ -20,6 +20,8 @@ dependencies:
    
     git: https://github.com/ayalma/aft_pos_sdk.git
     #path : ../aft_pos_sdk
+  commons:
+    git: https://github.com/ayalma/esc_pos_commons.git
 
 
 dev_dependencies:
