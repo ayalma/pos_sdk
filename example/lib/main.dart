@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:pos_sdk/pos_sdk.dart';
 import 'package:mobile_pos_plugin/mobile_pos_plugin.dart';
 import 'package:provider/provider.dart';
+import 'package:commons/commons.dart';
+import 'package:aft_pos_sdk/aft_pos_sdk.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   PosSdkManager _posSdkManager = PosSdkManager();
-  await _posSdkManager.init(
-      sdkType: SdkType.Rahyab,
-      ipAddress: '192.168.1.1010',
-      port: 92100,
-      isChunked: true,
-      aftPosIp: '192.168.1.241',
-      aftPosPort: 1010,
-      aftPosType: AftPosType.Lan);
+  await _posSdkManager.initPrinters(
+    ipAddress: '192.168.1.1010',
+    port: 92100,
+    isChunked: true,
+  );
 
   runApp(MultiProvider(
       providers: [Provider(create: (context) => _posSdkManager)],
@@ -42,6 +41,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  PurchaseResponse result;
   @override
   Widget build(BuildContext context) {
     final PosSdkManager posSdkManager = Provider.of(context);
@@ -55,12 +55,18 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           RaisedButton.icon(
               onPressed: () {
-                posSdkManager
-                    .purchase("", "1000")
-                    .then((value) => print(value));
+                posSdkManager.purchase("", "1000").then(
+                      (value) => setState(
+                        () {
+                          print(value);
+                          result = value;
+                        },
+                      ),
+                    );
               },
               icon: Icon(Icons.payment),
-              label: Text("Make payment"))
+              label: Text("Make payment")),
+          // Text((result as PurchaseFailed)?.bankType ?? "")
         ],
       )),
     );
