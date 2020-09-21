@@ -101,8 +101,12 @@ class PosSdkManager {
         final result = await mobilePosPlugin.printAsync(captureResult.data);
         return PosPrintResult.success;
         break;
+      default:
+        throw Exception("Printer type is not supported");
     }
   }
+
+
 
   Future<List<String>> openCardReader() =>
       mobilePosPlugin.openMagneticStripeCardReader();
