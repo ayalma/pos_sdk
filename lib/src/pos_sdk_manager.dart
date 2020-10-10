@@ -5,7 +5,6 @@ import 'package:esc_pos_printer/esc_pos_printer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_pos_plugin/mobile_pos_plugin.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
-import 'package:pos_sdk/src/models/aft_pos_type.dart';
 import 'package:pos_sdk/src/models/capture_result.dart';
 import 'package:pos_sdk/src/models/printer_type.dart';
 
